@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="Recorder"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:background="#000"
+        android:textColor="#ffffff"/>
+
+    <View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:background="#666" />
+
+    <TextView
+        android:id="@+id/txt_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp" />
+
+    <Button
+        android:id="@+id/btn_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btn_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btn_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play"
+        android:textAllCaps="false"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btn_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Upload"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Data"
+        android:textAllCaps="false" />
+
+</LinearLayout>
