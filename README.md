@@ -7,8 +7,10 @@ Requirment:
 3. Android Application package: Firebase, AudioRecorder, MediaPlayer
 4. HTML: bootstrap.min.css, Chart.bundle.min.js, Chart.min.js, utils.js, echarts.min.js, jquery.min.js
 
+
 Running:
 Need to first run server and tornado_web python files for receiving data from Android application. "Upload" button should be happened before "data" button since the voice should be transferred to server and get json data back, and then transfer json data to webserver. The webserver is 35.289.40.211:8889.
+
 
 Limitation:
 Our project does not support parallel. For "History" button, Data transfer takes time, so wait a few seconds after login before click button.
