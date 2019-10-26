@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="static/samples/favicon.ico">
+
+  <title>COMP90024 Project</title>
+  <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <script src="static/Chart.bundle.min.js"></script>
+  <script src="static/Chart.min.js"></script>
+  <script src="static/samples/utils.js"></script>
+  <link href="static/COMP90025.css" rel="stylesheet">
+  <script src="static/echarts.min.js"></script>
+
+</head>
+
+<body>
+<!-- The top fixed navigation bar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">Voice Meeting</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul id="mytab"  class="nav navbar-nav">
+          <li class="active">
+          <li><a href="#readme" data-toggle="tab">Readme</a></li>
+          <li><a href="#scenario1" data-toggle="tab">Result</a></li>
+        </ul>
+      </div>
+
+
+
+    </div>
+  </nav>
+
+  <!-- Containers -->
+  <div class="container">
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="readme">
+        <div class="jumbotron">
+          <h1>Read Me</h1>
+          <p> This is the page to get the result of the voice meeting recognition. You will see the most
+          recently result from Android application of voice recognition. If you want to see more history.
+          Please, visit "History" on Android Application</p><br/>
+         <h2> Login </h2>
+          <p> Hi, Welcome. Use Logout to return to the login page</p>
+            <table>
+              <!-- Use post to tell server go logout-->
+            <form action="http://35.189.40.211:8889/logout" method="POST">
+                <input type="submit" value="Logout" id="logout">
+            </form>
+            </table>
+
+        </div>
+
+
+      </div>
+      <!-- The page of scenario1 -->
+      <div class="tab-pane fade" id="scenario1">
+
+        <div class="terminal" style="width:100% height:180px">
+          <div id="history">
+
+          </div>
+          <div class="line">
+            <span id="path">Message:&nbsp;&nbsp;</span>
+            <input type="text" id="input">
+            </line>
+          </div>
+	</div>
+
+          <div id="resultChart" style="width: 100%;height:400px;">
+            </div>
+
+        <input type="button" value="Start Program" id="cha">
+        <div class="chart" style="width:100%">
+            <div id="container1"style="width:29%;display:inline-block">
+            <canvas id="mychart">
+            </canvas>
+            </div>
+            <div id="container2" style="width:29%;display:inline-block">
+            <canvas id="mchart">
+            </canvas>
+            </div>
+            <div id="container3" style="width:29%;display:inline-block">
+            <canvas id="mchar">
+            </canvas>
+            </div>
+        </div>
+
+
+        </div>
+    </div>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script>
+    $("#mytab a").click(function (e) {
+      e.preventDefault;
+      $(this).tab("show");
+    })
+  </script>
+
+	 <!-- The function of bar chart -->
+  <script>
+    function myFix(num){
+    if(isNaN(parseFloat(num))){
+        return false;
+    } else {
+        return Math.ceil(num*100)/100;
+    }
+    }
+
+    <!-- The clicking function of getting data from server. -->
+    document.querySelector('#cha').onclick = function () {
+        //This function is used to clear canvas and create a new canvas
+        function clearCanvas(){
+    $('#mychart').remove();
+    $('#container1').append('<canvas id="mychart"></canvas>');
+
+    $('#mchart').remove();
+    $('#container2').append('<canvas id="mchart"></canvas>');
+
+    $('#mchar').remove();
+    $('#container3').append('<canvas id="mchar"></canvas>');
+}
+
+      clearCanvas();
+
+      var xr = new XMLHttpRequest();
+
+      xr.open('get', '/MainHandler');
+
+      xr.onreadystatechange = function () {
+        var citiescount=[];
+        if (xr.readyState == 4 && xr.status == 200) {
+
+            var ar = JSON.parse(xr.responseText);
+            var username = ar[0];
+            var user = [];
+            var name = [];
+            var name1 = [];
+            var startTime = ar[1];
+            var endTime = ar[2];
+            var varr = ar[3];
+            var gender = ar[4];
+            var gender1 = [];
+            var periodTime = [];
+            var total = 0;
+            var duration = []
+            var chart = [0];
+            var count = 1;
+
+            <!-- give value to each variable -->
+            for (var i = 0; i < username.length; i++) {
+                if (username[i]=="not sure") {
+                    user.push(username[i]);
+                    name.push("User " + count);
+                    name1.push("User " + count);
+                    gender1.push(gender[i]);
+                    count++;
+                    var a = endTime[i] - startTime[i];
+                    a = myFix(a)
+                    periodTime.push(a);
+                    total = total + a;
+                    duration.push(a);
+                } else if (user.indexOf(username[i]) > -1) {
+                  name.push("User " + (user.indexOf(username[i]) + 1));
+                    var a = endTime[i] - startTime[i];
+                    a = myFix(a)
+                    periodTime.push(a);
+                    duration[user.indexOf(username[i])] = duration[user.indexOf(username[i])] + a
+                    total = total + a;
+                  } else {
+                    var a = endTime[i] - startTime[i];
+                    a = myFix(a)
+                    periodTime.push(a);
+                    duration.push(a);
+                    total = total + a;
+                    user.push(username[i]);
+                    name.push("User " + count);
+                    name1.push("User " + count);
+                    gender1.push(gender[i]);
+                    count++;
+                  }
+                 chart.push(endTime[i]);
+            }
+
+
+            $('#history').append("Receive: " + '<br/>');
+            for (var i = 0; i < ar[0].length ; i++) {
+                $('#history').append(name[i] + " : " + periodTime[i] + "s     Variance : " + myFix(varr[i]) + " %" + " Gender : " + gender[i] + '<br/>');
+            }
+            $('#history').append("Total time: " + myFix(total) + "s " + '<br/>');
+
+
+         var myChart = echarts.init(document.getElementById('resultChart'));
+        // give data to chart
+        var option = {
+            title: {
+                text: 'Time'
+            },
+            tooltip: {},
+            legend: {
+                data:['Time']
+            },
+            xAxis: {
+                data: name
+            },
+            yAxis: {},
+            series: [{
+                name: 'Time',
+                stack: 'total',
+                type: 'bar',
+                 itemStyle: {
+                normal: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'rgba(0,0,0,0)'
+                },
+                emphasis: {
+                    barBorderColor: 'rgba(0,0,0,0)',
+                    color: 'radar(0,0,0,0)'
+                }
+            },
+                data: chart
+            },
+            {
+                name: 'Time',
+                stack: 'total',
+                type: 'bar',
+                data:periodTime
+            }]
+        };
+
+        // setting chart。
+        myChart.setOption(option);
+
+
+
+            var color = Chart.helpers.color;
+
+          //barChartData setting
+            var barChartData = {
+                labels: name1,
+                datasets: [{
+                    label: 'Time',
+                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.red,
+                    borderWidth: 1,
+                    data: duration
+                }]
+            };
+
+            var barChartData2 = {
+                labels: name,
+                datasets: [{
+
+                    label: 'Variance in %',
+                    backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.green,
+                    borderWidth: 1,
+                    data: varr
+                }]
+            };
+
+            var barChartData3 = {
+                labels: name1,
+                datasets: [{
+
+                    label: 'Time used in %',
+                    backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.blue,
+                    borderWidth: 1,
+                    data: duration
+                }]
+            };
+            var ct1 = document.getElementById('mchart').getContext('2d');
+            var ct2 = document.getElementById('mychart').getContext('2d');
+            var ct3 = document.getElementById('mchar').getContext('2d');
+
+                //This function is used to create a new bar chart
+                window.myBar = new Chart(ct1, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Time used'
+                        }
+                    }
+                });
+                //This function is used to create a new bar chart
+                window.myBar = new Chart(ct2, {
+                    type: 'bar',
+                    data: barChartData2,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Variation'
+                        }
+                    }
+                });
+                 window.myBar = new Chart(ct3, {
+                    type: 'pie',
+                    data: barChartData3,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Time in percentage'
+                        }
+                    }
+                });
+                window.myBar.update();
+        }
+      };
+      xr.send(null);
+    }
+
+  </script>
+
+ <script>
+    $(function () {
+      $('.terminal').on('click', function () {
+        $('#input').focus();
+      });
+
+      $('#input').on('keydown', function search(e) {
+        if (e.keyCode == 13) {
+          $('#history').append($(this).val() + '<br/>');
+          if ($(this).val().substring(0, 3) === 'cd ') {
+            $('#path').html($(this).val().substring(3) + '&nbsp;>&nbsp;');
+          }
+          $('#input').val('');
+
+        }
+      });
+    });
+  </script>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDKk0-6J68Y7_xVqjHMUf644yBpO1QRTU4",
+    authDomain: "project-comp2005.firebaseapp.com",
+    databaseURL: "https://project-comp2005.firebaseio.com",
+    projectId: "project-comp2005",
+    storageBucket: "project-comp2005.appspot.com",
+    messagingSenderId: "416009143440",
+    appId: "1:416009143440:web:89ccf30f600f747eb30415",
+    measurementId: "G-V3BP94FVYG"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+</body>
+
+</html>
