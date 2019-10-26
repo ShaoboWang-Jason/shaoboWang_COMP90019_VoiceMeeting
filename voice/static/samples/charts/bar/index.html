@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="static/samples/favicon.ico">
+
+  <title>COMP90024 Project</title>
+
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <script src="static/Chart.bundle.min.js"></script>
+  <script src="../../Chart.min.js"></script>
+  <script src="../../utils.js"></script>
+  <link href="static/Project1.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">Deadly Sins</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul id="mytab"  class="nav navbar-nav">
+          <li class="active">
+          <li><a href="#readme" data-toggle="tab">Readme</a></li>
+          <li><a href="#map" data-toggle="tab">Scenario1</a></li>
+          <li><a href="#data" data-toggle="tab">Scenario2</a></li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+
+
+    </div>
+  </nav>
+
+  <!-- <div class="container"> -->
+  <div class="container">
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade in active" id="readme">
+        <div class="jumbotron">
+          <h1>Read Me</h1>
+          <p>This app is about analyzing the seven deadly sins with social network<br>
+          <h2> Link1 </h2>
+          <a href='#map' data-toggle="tab"> Map and Chart</a>
+          <p> This is the link to Map and Chart </p>
+
+	  <h2> Link2 </h2>
+          <a href='#data'data-toggle="tab"> Data Analyze</a>
+          <p> This is the link to Data Analyze </p>
+
+
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="map">
+          
+      <div id="googleMap" style="width:100%;height:400px;"></div>
+      <script>
+          function myMap() {
+              var aus = {lat:-25.2744, lng:133.7751};		 
+              var melb = {lat:-37.8136, lng:144.9631};
+              var syd = {lat:-33.8688, lng:151.2093};
+              
+              var map = new google.maps.Map(document.getElementById("googleMap"),{
+	          zoom: 4,
+		  center: aus
+		  });
+
+              var melbdata = '<div id="melb">'+
+            '<h1>Melb</h1>' +
+            '<div>'+
+            '<p> This is Melbourne data' + 
+            '</p>' +
+            '<div id = "mel">' +
+            '</div>'
+            '</div>' +
+            '</div>';
+            
+
+	       var syddata = '<div id="syd">'+
+            '<div>'+
+            '</div>'+
+            '<h1>syd</h1>'+
+            '<div>'+
+            '<p> This is Sydney data' + 
+            '</p>' +
+            '<div id = "syd">' +
+            '</div>'
+            '</div>'+
+            '</div>';
+	  
+	      var melbwindow = new google.maps.InfoWindow({
+                      content: melbdata
+              });
+
+              var melbmarker = new google.maps.Marker({
+		      position: melb,
+                      map: map,
+                      title: 'Melbourne'
+              });
+	      melbmarker.addListener('click',function(){
+		      melbwindow.open(map, melbmarker);
+	      });
+
+
+	      var sydwindow = new google.maps.InfoWindow({
+                      content: syddata
+              });
+
+              var sydmarker = new google.maps.Marker({
+                      position: syd,
+                      map: map,
+                      title: 'Sydney'
+              });
+              sydmarker.addListener('click',function(){
+                      sydwindow.open(map, sydmarker);
+              });
+
+	  
+	  }
+	  
+          
+      </script>
+
+	      <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCy3T4TFnxIvxE4akQPHx1MjKw1PDUJRuw&callback=myMap&language=en">
+    </script>
+          <div class="chart" style="width:100%">
+            <input type="button" value="Start Program" id="cha">
+            <div style="width:45%;position: left">
+            <canvas id="mychart">
+            </canvas>
+            </div>
+            <div style="width:45%;position:right">
+            <canvas id="mchart">
+            </canvas>
+            </div>
+        </div>
+      
+          <div class="terminal" style="position:right; height:180px">
+          <div id="history">
+
+          </div>
+          <div class="line">
+            <span id="path">Message:&nbsp;&nbsp;</span>
+            <input type="text" id="input">
+            </line>
+          </div>
+	</div>
+        </div>
+    
+      <div class="tab-pane fade" id="data">
+        <div class="D">
+          <div style="width:45%;position: left">
+            <canvas id="mychar">
+            </canvas>
+            </div>
+            <div style="width:45%;position:right">
+            <canvas id="mchar">
+            </canvas>
+            </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script>
+    $("#mytab a").click(function (e) {
+      e.preventDefault;
+      $(this).tab("show");
+    })
+  </script>
+
+  <script>
+    document.querySelector('#cha').onclick = function () {
+
+      var xr = new XMLHttpRequest();
+
+      xr.open('post', '/IndexHandler');
+
+      xr.onreadystatechange = function () {
+        var labels = [], datas = []
+
+        if (xr.readyState == 4 && xr.status == 200) {
+          console.log(xr.responseText);
+          $('#history').append("Receive: " + '<br/>');
+          $('#history').append(xr.responseText + '<br/>');
+          var ar = JSON.parse(xr.responseText);
+          var an = new Map();
+          
+          for (var i = 0; i < ar.length; i++) {
+            var currentObj = ar[i];
+            labels.push(currentObj.name);
+            datas.push(currentObj.count);
+            an.set(currentObj.name,currentObj.count);
+          }
+          $('#mel').append(an.get('melbourne'));
+          $('#syd').append(an.get('Sydney'));
+        }
+
+
+
+        var color = Chart.helpers.color;
+		var barChartData = {
+			labels: ['Melbourne', 'Sydney'],
+			datasets: [{
+				label: 'Melbourne',
+				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.red,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}, {
+				label: 'Sydney',
+				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.blue,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}]
+
+		};
+		var ctx = document.getElementById('canvas').getContext('2d');
+
+        (function () {
+          'use strict';
+          var type = 'line';
+          var data = {
+            labels: labels,
+            datasets: [
+              {
+                label:'Comparison between cities',
+                data: datas,
+              }
+            ]
+          };
+
+          // var ctx = document.getElementById('mychart').getContext('2d');
+          var ct = document.getElementById('mychar').getContext('2d');
+          var chart = new Chart(ctx, {
+            type: 'bar',
+            data: barChartData,
+            options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Comparison between cities'
+					}
+				}
+          });
+          var chart = new Chart(ct, {
+            type: type,
+            data: data,
+            options: {
+              title: {
+                display: true,
+                text: 'Comparison',
+                fontColor: 'red',
+                fontSize: '20'
+              }
+            }
+          });
+        })();
+
+        (function () {
+          'use strict';
+          var type = 'bar';
+          var data = {
+            labels: labels,
+            datasets: [
+              {
+                label:'Comparison between cities',
+                data: datas,
+              }
+            ]
+          };
+
+          var ctx = document.getElementById('mchart').getContext('2d');
+          var ctx = document.getElementById('mchar').getContext('2d');
+          var chart = new Chart(ctx, {
+            type: type,
+            data: data,
+            options: {
+              title: {
+                display: true,
+                text: 'Comparison',
+                fontColor: 'red',
+                fontSize: '20'
+              }
+            }
+          });
+          var chart = new Chart(ct, {
+            type: type,
+            data: data,
+            options: {
+              title: {
+                display: true,
+                text: 'Comparison',
+                fontColor: 'red',
+                fontSize: '20'
+              }
+            }
+          });
+        })();
+      }
+
+
+      xr.send(null);
+    }
+
+  </script>
+
+  <script>
+    $(function () {
+      $('.terminal').on('click', function () {
+        $('#input').focus();
+      });
+
+      $('#input').on('keydown', function search(e) {
+        if (e.keyCode == 13) {
+          $('#history').append($(this).val() + '<br/>');
+          if ($(this).val().substring(0, 3) === 'cd ') {
+            $('#path').html($(this).val().substring(3) + '&nbsp;>&nbsp;');
+          }
+          $('#input').val('');
+
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
