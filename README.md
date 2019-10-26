@@ -11,10 +11,10 @@ This is the project for Voice Meeting Recognition. Our project goal is to recogn
 * Result.html: The web page for display json into charts followed by Login.html
 
 ## Requirment:
-1. Back-End Python package: scipy, numpy, pickle, extractFeature, map_adaptation, segmentation, pydub, librosa, json
-2. Server Python package: tornado, socket, threading
-3. Android Application package: Firebase, AudioRecorder, MediaPlayer
-4. HTML: bootstrap.min.css, Chart.bundle.min.js, Chart.min.js, utils.js, echarts.min.js, jquery.min.js
+* Back-End Python package: scipy, numpy, pickle, extractFeature, map_adaptation, segmentation, pydub, librosa, json
+* Server Python package: tornado, socket, threading
+* Android Application package: Firebase, AudioRecorder, MediaPlayer
+* HTML: bootstrap.min.css, Chart.bundle.min.js, Chart.min.js, utils.js, echarts.min.js, jquery.min.js
 
 ## How to Use
 * Need to first run server and tornado_web python files for receiving data from Android application. 
