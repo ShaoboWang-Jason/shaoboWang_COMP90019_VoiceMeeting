@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,6 +28,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -60,7 +65,8 @@ public class RecordActivity extends AppCompatActivity {
     private pcmToWav changeToWav = new pcmToWav();
     private MediaPlayer mediaPlayer = new MediaPlayer();
     private FirebaseAuth mAuth;
-    String result = null;
+    public static String result;
+    JSONArray arr = new JSONArray();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference mdatabase = database.getReference();
 
@@ -178,8 +184,9 @@ public class RecordActivity extends AppCompatActivity {
                     Thread sendThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            upload(result);
-                            newHistory(logger.email,result);
+                            Logger.e(arr.toString());
+                            upload(arr.toString());
+                            newHistory(logger.email,arr.toString());
 
                         }
                     });
@@ -215,8 +222,40 @@ public class RecordActivity extends AppCompatActivity {
 
             }
             s.shutdownOutput();
-            result = inRead.readLine();
-            System.out.println(result);
+            String str = null;
+            result = "";
+            while((str = inRead.readLine()) != null) {
+                result = result + str;
+            }
+            result = result.replaceAll("], ",":");
+            result = result.replaceAll("\\[","");
+            result = result.replaceAll("\\'","");
+            result = result.replaceAll("\\]","");
+            String[] list = result.split(":");
+            String[] list1 =list[0].split(", ");
+            String[] list2 =list[1].split(", ");
+            String[] list3 =list[2].split(", ");
+            String[] list4 =list[3].split(", ");
+            String[] list5 =list[4].split(", ");
+            arr = new JSONArray();
+            JSONArray arr1 = new JSONArray();
+            JSONArray arr2 = new JSONArray();
+            JSONArray arr3 = new JSONArray();
+            JSONArray arr4 = new JSONArray();
+            JSONArray arr5 = new JSONArray();
+            for (int i = 0; i < list1.length;i ++ ) {
+                arr1.put(list1[i]);
+                arr2.put(list2[i]);
+                arr3.put(list3[i]);
+                arr4.put(list4[i]);
+                arr5.put(list5[i]);
+            }
+            arr.put(arr1);
+            arr.put(arr2);
+            arr.put(arr3);
+            arr.put(arr4);
+            arr.put(arr5);
+            Logger.e(result);
             fis.close();
             out.close();
             in.close();

@@ -46,6 +46,7 @@ public class StartActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // analysis the json string to string list
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    finalResult = new String[100];
                     String address = ds.child("userid").getValue(String.class);
                     String name = ds.child("result").getValue(String.class);
                     String[] list = name.split("],");
