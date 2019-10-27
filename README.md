@@ -1,5 +1,5 @@
 # Read Me
-This is the project for Voice Meeting Recognition. Our project goal is to recognize and distinguish people who are talking during the meeting time. It consists of Android and web applications, server and back-end Python algorithm files. Server and tornado_web file are set on Google Cloud and the IP used in file is 35.289.40.211 which is the external IP for Google Cloud Virtual Machine. 
+This is the project for Voice Meeting Recognition. Our project goal is to recognize and distinguish people who are talking during the meeting time. It consists of Android and web applications, server and back-end Python algorithm files. Server and tornado_web file are set on Google Cloud and the IP used in file is 35.289.40.211 which is the external IP for Google Cloud Virtual Machine. Network may cause some errors, just like big json transfer error. Please check net and try again.
 
 ## Main Component:
 * Comp90025-Android: The application of voice recording.
