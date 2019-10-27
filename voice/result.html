@@ -168,7 +168,6 @@
             var duration = []
             var chart = [0];
             var count = 1;
-
             <!-- give value to each variable -->
             for (var i = 0; i < username.length; i++) {
                 if (username[i]=="not sure") {
@@ -179,6 +178,7 @@
                     count++;
                     var a = endTime[i] - startTime[i];
                     a = myFix(a)
+//		    $('#history').append(username.length + " " + name + "  " + name1 + " " + gender1 + "  " + a + " "  + '<br/>');
                     periodTime.push(a);
                     total = total + a;
                     duration.push(a);
@@ -207,10 +207,10 @@
 
             $('#history').append("Receive: " + '<br/>');
             for (var i = 0; i < ar[0].length ; i++) {
-                $('#history').append(name[i] + " : " + periodTime[i] + "s     Variance : " + myFix(varr[i]) + " %" + " Gender : " + gender[i] + '<br/>');
+                $('#history').append(name[i] + " : " + periodTime[i] + "s     Confidence : " + myFix(varr[i]) + " %" + " Gender : " + gender[i] + '<br/>');
             }
             $('#history').append("Total time: " + myFix(total) + "s " + '<br/>');
-
+	    $('#history').append("Total people: " + count + "s " + '<br/>');
 
          var myChart = echarts.init(document.getElementById('resultChart'));
         // give data to chart
@@ -273,7 +273,7 @@
                 labels: name,
                 datasets: [{
 
-                    label: 'Variance in %',
+                    label: 'Confidence in %',
                     backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
                     borderColor: window.chartColors.green,
                     borderWidth: 1,

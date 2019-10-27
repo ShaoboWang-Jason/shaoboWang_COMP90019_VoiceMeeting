@@ -16,7 +16,7 @@ from scipy.io.wavfile import read
 #model ---ubm
 #trained model ---gmm
 
-modelpath = '/Users/wangshaobo/Desktop/UI/it5'
+modelpath = '/home/wangshaobo/comp90025/UI/it5'
 
 gmm_files = [os.path.join(modelpath,fname) for fname in
               os.listdir(modelpath) if fname.endswith('.gmm')]
@@ -107,26 +107,25 @@ def total_result(data):
             result, confidence = 'not sure', 'none'
         id.append(result)
         if result in genderDic['male']:
-            gender.append('male')
+            gender.append("male")
         else:
-            gender.append('female')
+            gender.append("female")
         s_time.append(round(start_time/1000,2))
         e_time.append(round(end_time/1000,2))
         if result in dic.keys():
             temp = dic[result]
             if confidence != 'none':
-                c = '%.2f' % (confidence * 2000)
+                c = "%.2f" % (confidence * 1700)
             else:
-                c = 'none'
+                c = "none"
             temp.append((start_time/1000, end_time/1000))
         else:
             if confidence != 'none':
-                c = '%.2f' % (confidence * 2000)
+                c = "%.2f" % (confidence * 1700)
             else:
-                c = 'none'
+                c = "none"
             dic[result] = [(start_time/1000, end_time/1000)]
         con.append(c)
     t[0], t[1], t[2], t[3],t[4] = id, s_time, e_time, con, gender
-    jsonStr = json.dumps(t)
-    return jsonStr
+    return (str(t))
 

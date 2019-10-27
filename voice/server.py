@@ -31,7 +31,6 @@ def accept_client():
         thread.start()
 
 def message_handle(pip):
-    print('handling')
     i = 0
     try:
         while True:
@@ -49,15 +48,15 @@ def message_handle(pip):
                         if not data:
                             break
                         f.write(data)
-        print(total_result(name))
-        pip.send(total_result(name).encode())
+        result = total_result(name)
+        print(result)
+        pip.sendall(result.encode())
+        print("Receving")
         pip.close()
         g_conn_pool.remove(pip)
     except ValueError as e:
         print(e)
         pip.send('Try again')
-
-
 if __name__ == '__main__':
 
     try:
