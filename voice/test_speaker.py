@@ -32,18 +32,13 @@ genderDic = {'female':('1','11','12','13','16','17','18','19','42',
              'male':('2','3','4','5','6','7','8','9','10','14','15',
                      '21','23','24','25','26','27','28','29','31',
                      '32','33','35','36','41','40')}
-def maxnor(array):
-    max_a = max(array)
-    min_a = min(array)
-    res = []
-    for i in array:
-        a = (i - min_a) / (max_a-min_a)
-        res.append(a)
-    return res
 
-def cal_var(array):
-    arr_var = np.var(array)
-    return arr_var
+def cal_confidence(array):
+    array.sort(reverse = True)
+    max_score = array[0]
+    sec_score = array[1]
+    confidence = sec_score/(sec_score+max_score)
+    return confidence
 
 def predict(sr,audio):
     vector = extract_feat(audio, sr)
@@ -61,7 +56,7 @@ def predict(sr,audio):
     speaker_id = np.argmax(log_likelihood)
 
     # calculate confidence
-    confidence = cal_var(maxnor(log_likelihood))
+    confidence = cal_confidence(log_likelihood)
 
     #print('speaker', file, 'is', speakers[speaker_id])
     return speakers[speaker_id], confidence
@@ -115,13 +110,13 @@ def total_result(data):
         if result in dic.keys():
             temp = dic[result]
             if confidence != 'none':
-                c = "%.2f" % (confidence * 1700)
+                c = "%.2f" % (confidence *1000)
             else:
                 c = "none"
             temp.append((start_time/1000, end_time/1000))
         else:
             if confidence != 'none':
-                c = "%.2f" % (confidence * 1700)
+                c = "%.2f" % (confidence * 1000)
             else:
                 c = "none"
             dic[result] = [(start_time/1000, end_time/1000)]
