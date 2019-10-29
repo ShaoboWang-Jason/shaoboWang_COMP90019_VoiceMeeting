@@ -9,6 +9,7 @@ This is the project for Voice Meeting Recognition. Our project goal is to recogn
 * train_model.py: Training the model
 * Login.html: The main web login page for html
 * Result.html: The web page for display json into charts followed by Login.html
+* it5: The model for training.
 
 ## Requirment:
 * Back-End Python package: scipy, numpy, pickle, extractFeature, map_adaptation, segmentation, pydub, librosa, json
