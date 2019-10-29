@@ -178,12 +178,11 @@
                     count++;
                     var a = endTime[i] - startTime[i];
                     a = myFix(a)
-//		    $('#history').append(username.length + " " + name + "  " + name1 + " " + gender1 + "  " + a + " "  + '<br/>');
                     periodTime.push(a);
                     total = total + a;
                     duration.push(a);
                 } else if (user.indexOf(username[i]) > -1) {
-                  name.push("User " + (user.indexOf(username[i]) + 1));
+                    name.push("User " + (user.indexOf(username[i]) + 1));
                     var a = endTime[i] - startTime[i];
                     a = myFix(a)
                     periodTime.push(a);
@@ -203,14 +202,19 @@
                   }
                  chart.push(endTime[i]);
             }
-
-
+	    count = count - 1;
             $('#history').append("Receive: " + '<br/>');
             for (var i = 0; i < ar[0].length ; i++) {
                 $('#history').append(name[i] + " : " + periodTime[i] + "s     Confidence : " + myFix(varr[i]) + " %" + " Gender : " + gender[i] + '<br/>');
             }
+           
+            $('#history').append( '<br/>');
+            $('#history').append("Final result: " + '<br/>');
+            for (var i = 0; i < name1.length ; i++) {
+                $('#history').append(name1[i] + " : " + myFix(duration[i]) + "s   Gender :  "  + gender1[i] + '<br/>');
+            }
             $('#history').append("Total time: " + myFix(total) + "s " + '<br/>');
-	    $('#history').append("Total people: " + count + "s " + '<br/>');
+	    $('#history').append("Total people: " + count + '<br/>');
 
          var myChart = echarts.init(document.getElementById('resultChart'));
         // give data to chart
