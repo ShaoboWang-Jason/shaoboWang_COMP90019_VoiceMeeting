@@ -22,7 +22,9 @@ This is the project for Voice Meeting Recognition. The project is COMP90019 but 
 * Firebase is needed. Therefore, the emulator should be able to connect to Internet.
 * The ip and port are uniformed, if you wish to change the IP, you need to first set up server.py and tornado_web.py, and change the ip connection on Android Application.
 * "Upload" button should be happened before "data" button since the voice should be transferred to server and get json data back, and then transfer json data to webserver. 
-* The webserver is 35.289.40.211:8889.
+* Sometimes backend will not recognize the file name, if cannot find any data back, please retry upload button.
+* Do not click data button if there is an empty data back. Although we have handle exception for empty message, still need to be careful of empty message.
+* The userid please try a@qq.com with password 111111
 
 
 ## Limitation:
