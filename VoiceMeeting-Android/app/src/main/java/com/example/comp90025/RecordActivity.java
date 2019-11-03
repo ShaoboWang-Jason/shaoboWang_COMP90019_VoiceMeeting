@@ -185,8 +185,18 @@ public class RecordActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Logger.e(arr.toString());
-                            upload(arr.toString());
-                            newHistory(logger.email,arr.toString());
+                            if (!arr.toString().equals("")){
+                                if (!arr.toString().equals("[]")) {
+                                    upload(arr.toString());
+                                    newHistory(logger.email,arr.toString());
+                                } else {
+                                    Logger.e("Please retry upload button or reord again. Some errors with upload");
+                                }
+                            } else {
+                                Toast.makeText(RecordActivity.this, "There is no data exist!!",
+                                        Toast.LENGTH_SHORT ).show();
+                            }
+
 
                         }
                     });
@@ -224,38 +234,50 @@ public class RecordActivity extends AppCompatActivity {
             s.shutdownOutput();
             String str = null;
             result = "";
+            boolean a = true;
+            String b = "1";
             while((str = inRead.readLine()) != null) {
-                result = result + str;
+                if (!str.equals("[]")){
+                    result = result + str;
+                } else {
+                    a = false;
+                }
             }
-            result = result.replaceAll("], ",":");
-            result = result.replaceAll("\\[","");
-            result = result.replaceAll("\\'","");
-            result = result.replaceAll("\\]","");
-            String[] list = result.split(":");
-            String[] list1 =list[0].split(", ");
-            String[] list2 =list[1].split(", ");
-            String[] list3 =list[2].split(", ");
-            String[] list4 =list[3].split(", ");
-            String[] list5 =list[4].split(", ");
-            arr = new JSONArray();
-            JSONArray arr1 = new JSONArray();
-            JSONArray arr2 = new JSONArray();
-            JSONArray arr3 = new JSONArray();
-            JSONArray arr4 = new JSONArray();
-            JSONArray arr5 = new JSONArray();
-            for (int i = 0; i < list1.length;i ++ ) {
-                arr1.put(list1[i]);
-                arr2.put(list2[i]);
-                arr3.put(list3[i]);
-                arr4.put(list4[i]);
-                arr5.put(list5[i]);
+            if (a == true) {
+                result = result.replaceAll("], ",":");
+                result = result.replaceAll("\\[","");
+                result = result.replaceAll("\\'","");
+                result = result.replaceAll("\\]","");
+                String[] list = result.split(":");
+                String[] list1 =list[0].split(", ");
+                String[] list2 =list[1].split(", ");
+                String[] list3 =list[2].split(", ");
+                String[] list4 =list[3].split(", ");
+                String[] list5 =list[4].split(", ");
+                arr = new JSONArray();
+                JSONArray arr1 = new JSONArray();
+                JSONArray arr2 = new JSONArray();
+                JSONArray arr3 = new JSONArray();
+                JSONArray arr4 = new JSONArray();
+                JSONArray arr5 = new JSONArray();
+                for (int i = 0; i < list1.length;i ++ ) {
+                    arr1.put(list1[i]);
+                    arr2.put(list2[i]);
+                    arr3.put(list3[i]);
+                    arr4.put(list4[i]);
+                    arr5.put(list5[i]);
+                }
+                arr.put(arr1);
+                arr.put(arr2);
+                arr.put(arr3);
+                arr.put(arr4);
+                arr.put(arr5);
+                Logger.e(result);
+            } else {
+                Toast.makeText(RecordActivity.this, "Data is wrong!!",
+                        Toast.LENGTH_SHORT ).show();
             }
-            arr.put(arr1);
-            arr.put(arr2);
-            arr.put(arr3);
-            arr.put(arr4);
-            arr.put(arr5);
-            Logger.e(result);
+
             fis.close();
             out.close();
             in.close();

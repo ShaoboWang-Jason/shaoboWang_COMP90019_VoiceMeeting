@@ -24,7 +24,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         // use listview to show the history
         final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < startActivity.count; ++i) {
+        for (int i = 0; i < (startActivity.count - 1); ++i) {
             list.add(startActivity.finalResult[i]);
         }
         ArrayAdapter adapter = new ArrayAdapter<String>(this,

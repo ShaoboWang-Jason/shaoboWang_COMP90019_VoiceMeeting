@@ -26,8 +26,8 @@ public class StartActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     private FirebaseAuth auth;
-    public static String[] finalResult = new String[100];
-    public static int count= 0;
+    public static String[] finalResult;
+    public static int count;
 
     private Button mBtnRecord, mBtnHistory;
 
@@ -44,20 +44,23 @@ public class StartActivity extends AppCompatActivity {
         hist.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                finalResult = new String[100];
+                count = 0;
                 // analysis the json string to string list
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    finalResult = new String[100];
-                    String address = ds.child("userid").getValue(String.class);
-                    String name = ds.child("result").getValue(String.class);
-                    String[] list = name.split("],");
-                    list[0] = list[0].replaceAll("\\[","");
-                    String[] list1 = list[0].split(",");
-                    int ppl = list1.length;
-                    list[2] = list[2].replaceAll("\\[","");
-                    String[] list2 = list[2].split(",");
-                    String totalTime = list2[list2.length-1];
-                    finalResult[count] = "Userid : " + address + ", Total people: " + ppl + ", Total Time: " + totalTime;
-                    count++;
+                    if (!ds.child("result").getValue(String.class).equals("[]")){
+                        String address = ds.child("userid").getValue(String.class);
+                        String name = ds.child("result").getValue(String.class);
+                        String[] list = name.split("],");
+                        list[0] = list[0].replaceAll("\\[","");
+                        String[] list1 = list[0].split(",");
+                        int ppl = list1.length;
+                        list[2] = list[2].replaceAll("\\[","");
+                        String[] list2 = list[2].split(",");
+                        String totalTime = list2[list2.length-1];
+                        finalResult[count] = "Userid : " + address + ", Total people: " + ppl + ", Total Time: " + totalTime;
+                        count++;
+                    }
                 }
 
             }
