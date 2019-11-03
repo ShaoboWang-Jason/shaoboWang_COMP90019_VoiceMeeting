@@ -19,6 +19,8 @@ This is the project for Voice Meeting Recognition. The project is COMP90019 but 
 
 ## How to Use
 * Need to first run server and tornado_web python files for receiving data from Android application. 
+* Firebase is needed. Therefore, the emulator should be able to connect to Internet.
+* The ip and port are uniformed, if you wish to change the IP, you need to first set up server.py and tornado_web.py, and change the ip connection on Android Application.
 * "Upload" button should be happened before "data" button since the voice should be transferred to server and get json data back, and then transfer json data to webserver. 
 * The webserver is 35.289.40.211:8889.
 
