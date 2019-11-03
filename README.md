@@ -16,6 +16,7 @@ This is the project for Voice Meeting Recognition. The project is COMP90019 but 
 * Server Python package: tornado, socket, threading
 * Android Application package: Firebase, AudioRecorder, MediaPlayer
 * HTML: bootstrap.min.css, Chart.bundle.min.js, Chart.min.js, utils.js, echarts.min.js, jquery.min.js
+* Firebase: Need Google play for FirebaseAuth
 
 ## How to Use
 * Need to first run server and tornado_web python files for receiving data from Android application. 
