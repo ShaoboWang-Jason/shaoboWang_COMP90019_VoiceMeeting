@@ -9,11 +9,13 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +55,7 @@ import java.util.TimerTask;
 public class RecordActivity extends AppCompatActivity {
     private Button btn_start,btn_stop,btn_play,btn_upload,btn_data;
     private TextView txt_time;
+    private ProgressBar ptn;
     private boolean isDoing = false;
     private Timer time;
     private int timeInRecorder = 0;
@@ -81,6 +84,8 @@ public class RecordActivity extends AppCompatActivity {
         btn_upload = findViewById(R.id.btn_upload);
         btn_data = findViewById(R.id.btn_data);
         txt_time = findViewById(R.id.txt_1);
+        ptn = findViewById(R.id.ptn_1);
+        ptn.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         iniEvent();
         setListeners();
@@ -99,7 +104,7 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isDoing) {
-                    Toast.makeText(RecordActivity.this, "Stop first", Toast.LENGTH_SHORT ).show();
+                    Toast.makeText(RecordActivity.this, "Please Stop first", Toast.LENGTH_SHORT ).show();
 
                 } else {
                     mediaPlayer.stop();
@@ -154,6 +159,7 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (newPath != null) {
+                    ptn.setVisibility(View.GONE);
                     Thread sendThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -164,6 +170,9 @@ public class RecordActivity extends AppCompatActivity {
                             int end=newPath.lastIndexOf(".");
                             String filename = newPath.substring(start+1,end);
                             sendFile(filename,newPath,ipAd,port);
+                            Looper.prepare();
+                            Toast.makeText(getApplicationContext(), "Upload success", Toast.LENGTH_LONG).show();
+                            Looper.loop();
                         }
                     });
                     sendThread.start();
@@ -172,6 +181,8 @@ public class RecordActivity extends AppCompatActivity {
                     Toast.makeText(RecordActivity.this, "There is no file exist!!",
                             Toast.LENGTH_SHORT ).show();
                 }
+
+
 
             }
         });
@@ -190,11 +201,10 @@ public class RecordActivity extends AppCompatActivity {
                                     upload(arr.toString());
                                     newHistory(logger.email,arr.toString());
                                 } else {
-                                    Logger.e("Please retry upload button or reord again. Some errors with upload");
+                                    Logger.e("wrong message");
                                 }
                             } else {
-                                Toast.makeText(RecordActivity.this, "There is no data exist!!",
-                                        Toast.LENGTH_SHORT ).show();
+                                Logger.e("No data ");
                             }
 
 
@@ -237,10 +247,11 @@ public class RecordActivity extends AppCompatActivity {
             boolean a = true;
             String b = "1";
             while((str = inRead.readLine()) != null) {
-                if (!str.equals("[]")){
+                if (!str.equals("")){
                     result = result + str;
                 } else {
                     a = false;
+                    break;
                 }
             }
             if (a == true) {
@@ -274,8 +285,9 @@ public class RecordActivity extends AppCompatActivity {
                 arr.put(arr5);
                 Logger.e(result);
             } else {
-                Toast.makeText(RecordActivity.this, "Data is wrong!!",
-                        Toast.LENGTH_SHORT ).show();
+                Looper.prepare();
+                Toast.makeText(getApplicationContext(), "Data is wrong! Please record again", Toast.LENGTH_LONG).show();
+                Looper.loop();
             }
 
             fis.close();
