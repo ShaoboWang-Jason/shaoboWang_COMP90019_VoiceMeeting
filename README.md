@@ -16,13 +16,14 @@ This is the project for Voice Meeting Recognition. The project is COMP90019 but 
 * Server Python package: tornado, socket, threading
 * Android Application package: Firebase, AudioRecorder, MediaPlayer
 * HTML: bootstrap.min.css, Chart.bundle.min.js, Chart.min.js, utils.js, echarts.min.js, jquery.min.js
-* Firebase: Need Google play for FirebaseAuth
+* Firebase: Need Google play for FirebaseAuth, need Internet
 
 ## How to Use
 * Need to first run server and tornado_web python files for receiving data from Android application. 
 * Firebase is needed. Therefore, the emulator should be able to connect to Internet.
 * The ip and port are uniformed, if you wish to change the IP, you need to first set up server.py and tornado_web.py, and change the ip connection on Android Application.
 * "Upload" button should be happened before "data" button since the voice should be transferred to server and get json data back, and then transfer json data to webserver. 
+* Short time recording may have some errors just like the information header does not recognize. If click "Upload" button and there is no response for a while waiting time. Click the button again! If tried some times but still not work, please record again. The back-end may not recognize this recording. 
 * Sometimes backend will not recognize the file name, if cannot find any data back, please retry upload button.
 * Do not click data button if there is an empty data back. Although we have handle exception for empty message, still need to be careful of empty message.
 * The userid please try a@qq.com with password 111111
