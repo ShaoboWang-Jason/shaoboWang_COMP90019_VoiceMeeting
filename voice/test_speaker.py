@@ -34,9 +34,10 @@ genderDic = {'female':('1','11','12','13','16','17','18','19','42',
                      '32','33','35','36','41','40')}
 
 def cal_confidence(array):
-    array.sort(reverse = True)
-    max_score = array[0]
-    sec_score = array[1]
+    al = array.tolist()
+    al.sort(reverse = True)
+    max_score = al[0]
+    sec_score = al[1]
     confidence = sec_score/(sec_score+max_score)
     return confidence
 
@@ -110,13 +111,13 @@ def total_result(data):
         if result in dic.keys():
             temp = dic[result]
             if confidence != 'none':
-                c = "%.2f" % (confidence *1000)
+                c = "%.2f" % (confidence *150)
             else:
                 c = "none"
             temp.append((start_time/1000, end_time/1000))
         else:
             if confidence != 'none':
-                c = "%.2f" % (confidence * 1000)
+                c = "%.2f" % (confidence * 150)
             else:
                 c = "none"
             dic[result] = [(start_time/1000, end_time/1000)]
